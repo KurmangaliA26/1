@@ -16,19 +16,25 @@ body{
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
+/* Липкая шапка + safe area (iPhone) */
 .topbar{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: calc(12px + env(safe-area-inset-top)) 14px 12px 14px;
+  border-bottom:1px solid var(--border);
+
   display:flex;
+  gap:12px;
   align-items:flex-end;
   justify-content:space-between;
-  gap:12px;
-  padding:16px;
-  border-bottom:1px solid var(--border);
 }
+
+.title{ min-width: 0; }
 
 h1{ margin:0; font-size:20px; }
 h2{ margin:0 0 12px 0; font-size:17px; }
-h3{ margin:14px 0 8px 0; font-size:15px; }
-
 .muted{ color:var(--muted); margin:6px 0 0 0; }
 .small{ font-size:12px; }
 
@@ -43,7 +49,7 @@ h3{ margin:14px 0 8px 0; font-size:15px; }
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:12px;
-  padding:12px 16px 20px 16px;
+  padding:12px 14px calc(18px + env(safe-area-inset-bottom)) 14px;
 }
 
 .card{
@@ -93,7 +99,7 @@ input, select{
   border:1px solid var(--border);
   border-radius:12px;
   padding:12px 12px;
-  font-size:16px; /* важно для iOS: не будет авто-зума */
+  font-size:16px; /* чтобы iOS не увеличивал страницу */
   width:100%;
 }
 
@@ -104,13 +110,10 @@ button{
   font-size:16px;
   cursor:pointer;
   background:#f6f6f6;
-  min-height:44px; /* touch target */
+  min-height:44px; /* удобный тап */
 }
 
-button:hover{ filter: brightness(0.98); }
-
 button.full{ flex-basis: 100%; }
-
 button.danger{
   background:#fff3f3;
   border-color:#ffd3d3;
@@ -122,13 +125,26 @@ hr{
   margin:12px 0;
 }
 
+.details{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px;
+  margin-top:10px;
+}
+
+.summary{
+  cursor:pointer;
+  font-weight:700;
+  list-style: none;
+}
+.summary::-webkit-details-marker{ display:none; }
+
 .tableWrap{
   overflow:auto;
   border:1px solid var(--border);
   border-radius:14px;
 }
 
-/* ===== Таблица на десктопе ===== */
 .table{
   width:100%;
   border-collapse:collapse;
@@ -157,12 +173,9 @@ hr{
   white-space:nowrap;
 }
 
-.actions{
-  display:flex;
-  gap:6px;
-}
+.actions{ display:flex; gap:6px; }
 
-/* ===== Мобайл оптимизация ===== */
+/* ===== Mobile ===== */
 @media (max-width: 1000px){
   .grid{ grid-template-columns: 1fr; }
 }
@@ -176,13 +189,9 @@ hr{
 
   .kpi{ min-width: 100%; }
   .field{ min-width: 100%; }
+  .inline{ flex-direction:column; align-items:stretch; }
 
-  .inline{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  /* Таблицы в карточки (чтобы не было горизонтального скролла) */
+  /* Таблицы → карточки (важно: app.js должен ставить data-label) */
   .tableWrap{ overflow: visible; border: none; }
   .table{ min-width: 0; }
   .table thead{ display:none; }
