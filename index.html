@@ -2,19 +2,20 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Budget App (YNAB-like)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="topbar">
-    <div>
+    <div class="title">
       <h1>Budget App</h1>
-      <p class="muted">Zero-based бюджетирование (как YNAB)</p>
+      <p class="muted">Zero-based бюджетирование</p>
     </div>
 
     <div class="monthbox">
-      <label class="muted">Месяц</label>
+      <label class="muted" for="month">Месяц</label>
       <input id="month" type="month" />
     </div>
   </header>
@@ -38,58 +39,64 @@
         <label class="field">
           <span class="muted">Добавить доход (₸)</span>
           <div class="inline">
-            <input id="incomeAmount" type="number" placeholder="например 250000" />
-            <button id="addIncomeBtn">Добавить</button>
+            <input id="incomeAmount" type="number" inputmode="numeric" placeholder="например 250000" />
+            <button id="addIncomeBtn" type="button">Добавить</button>
           </div>
         </label>
       </div>
 
       <hr />
 
-      <h3>Категории</h3>
+      <details class="details" open>
+        <summary class="summary">Категории</summary>
 
-      <form id="addCategoryForm" class="row">
-        <label class="field">
-          <span class="muted">Название</span>
-          <input id="catName" placeholder="Еда / Транспорт / Сбережения..." />
-        </label>
-        <label class="field">
-          <span class="muted">Цель (₸, необязательно)</span>
-          <input id="catGoal" type="number" placeholder="например 50000" />
-        </label>
-        <label class="field">
-          <span class="muted">Цель до (необязательно)</span>
-          <input id="catGoalDate" type="date" />
-        </label>
-        <button class="full" type="submit">Добавить категорию</button>
-      </form>
+        <form id="addCategoryForm" class="row">
+          <label class="field">
+            <span class="muted">Название</span>
+            <input id="catName" placeholder="Еда / Транспорт / Сбережения..." />
+          </label>
 
-      <div class="tableWrap">
-        <table class="table" id="categoriesTable">
-          <thead>
-            <tr>
-              <th>Категория</th>
-              <th>Назначено</th>
-              <th>Активность</th>
-              <th>Доступно</th>
-              <th>Цель</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+          <label class="field">
+            <span class="muted">Цель (₸, необязательно)</span>
+            <input id="catGoal" type="number" inputmode="numeric" placeholder="например 50000" />
+          </label>
 
-      <div class="row">
-        <label class="field">
-          <span class="muted">Быстро назначить в категорию (₸)</span>
-          <div class="inline">
-            <select id="assignCatSelect"></select>
-            <input id="assignAmount" type="number" placeholder="например 20000" />
-            <button id="assignBtn">Назначить</button>
-          </div>
-        </label>
-      </div>
+          <label class="field">
+            <span class="muted">Цель до (необязательно)</span>
+            <input id="catGoalDate" type="date" />
+          </label>
+
+          <button class="full" type="submit">Добавить категорию</button>
+        </form>
+
+        <div class="tableWrap">
+          <table class="table" id="categoriesTable">
+            <thead>
+              <tr>
+                <th>Категория</th>
+                <th>Назначено</th>
+                <th>Активность</th>
+                <th>Доступно</th>
+                <th>Цель</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span class="muted">Назначить / снять из категории (₸)</span>
+            <div class="inline">
+              <select id="assignCatSelect"></select>
+              <input id="assignAmount" type="number" inputmode="numeric" placeholder="можно минус" />
+              <button id="assignBtn" type="button">Применить</button>
+            </div>
+            <span class="muted small">Минус — снять назначение (если не уходит в минус доступное).</span>
+          </label>
+        </div>
+      </details>
     </section>
 
     <section class="card">
@@ -111,7 +118,7 @@
 
         <label class="field">
           <span class="muted">Сумма (₸)</span>
-          <input id="txAmount" type="number" required />
+          <input id="txAmount" type="number" inputmode="numeric" required />
         </label>
 
         <label class="field">
@@ -127,15 +134,20 @@
         <button class="full" type="submit">Добавить транзакцию</button>
       </form>
 
-      <div class="row">
-        <label class="field">
-          <span class="muted">Импорт CSV (date, type, amount, category, note)</span>
-          <div class="inline">
-            <input id="csvFile" type="file" accept=".csv" />
-            <button id="importBtn" type="button">Импортировать</button>
-          </div>
-        </label>
-      </div>
+      <details class="details">
+        <summary class="summary">Импорт CSV</summary>
+
+        <div class="row">
+          <label class="field">
+            <span class="muted">CSV: date,type,amount,category,note</span>
+            <div class="inline">
+              <input id="csvFile" type="file" accept=".csv" />
+              <button id="importBtn" type="button">Импортировать</button>
+            </div>
+          </label>
+        </div>
+        <p class="muted small">Поддерживает разделитель “,” или “;”.</p>
+      </details>
 
       <div class="tableWrap">
         <table class="table" id="txTable">
@@ -154,12 +166,8 @@
       </div>
 
       <div class="row">
-        <button class="danger" id="resetBtn" type="button">Сбросить данные (опасно)</button>
+        <button class="danger full" id="resetBtn" type="button">Сбросить данные</button>
       </div>
-
-      <p class="muted small">
-        Примечание: “Синхронизация с банком” — сложная штука (API/доступы). Тут сделан импорт CSV как безопасная замена.
-      </p>
     </section>
   </main>
 
