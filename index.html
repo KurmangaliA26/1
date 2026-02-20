@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Budget App (YNAB-like)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Budget App</h1>
+      <p class="muted">Zero-based бюджетирование (как YNAB)</p>
+    </div>
+
+    <div class="monthbox">
+      <label class="muted">Месяц</label>
+      <input id="month" type="month" />
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <h2>Общий бюджет</h2>
+
+      <div class="row">
+        <div class="kpi">
+          <div class="muted">Доход (в этом месяце)</div>
+          <div class="big" id="incomeKpi">0 ₸</div>
+        </div>
+        <div class="kpi">
+          <div class="muted">Осталось назначить</div>
+          <div class="big" id="toAssignKpi">0 ₸</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <label class="field">
+          <span class="muted">Добавить доход (₸)</span>
+          <div class="inline">
+            <input id="incomeAmount" type="number" placeholder="например 250000" />
+            <button id="addIncomeBtn">Добавить</button>
+          </div>
+        </label>
+      </div>
+
+      <hr />
+
+      <h3>Категории</h3>
+
+      <form id="addCategoryForm" class="row">
+        <label class="field">
+          <span class="muted">Название</span>
+          <input id="catName" placeholder="Еда / Транспорт / Сбережения..." />
+        </label>
+        <label class="field">
+          <span class="muted">Цель (₸, необязательно)</span>
+          <input id="catGoal" type="number" placeholder="например 50000" />
+        </label>
+        <label class="field">
+          <span class="muted">Цель до (необязательно)</span>
+          <input id="catGoalDate" type="date" />
+        </label>
+        <button class="full" type="submit">Добавить категорию</button>
+      </form>
+
+      <div class="tableWrap">
+        <table class="table" id="categoriesTable">
+          <thead>
+            <tr>
+              <th>Категория</th>
+              <th>Назначено</th>
+              <th>Активность</th>
+              <th>Доступно</th>
+              <th>Цель</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <label class="field">
+          <span class="muted">Быстро назначить в категорию (₸)</span>
+          <div class="inline">
+            <select id="assignCatSelect"></select>
+            <input id="assignAmount" type="number" placeholder="например 20000" />
+            <button id="assignBtn">Назначить</button>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Транзакции</h2>
+
+      <form id="txForm" class="row">
+        <label class="field">
+          <span class="muted">Тип</span>
+          <select id="txType">
+            <option value="expense">Расход</option>
+            <option value="income">Доход</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span class="muted">Категория (для расхода)</span>
+          <select id="txCategory"></select>
+        </label>
+
+        <label class="field">
+          <span class="muted">Сумма (₸)</span>
+          <input id="txAmount" type="number" required />
+        </label>
+
+        <label class="field">
+          <span class="muted">Описание</span>
+          <input id="txNote" placeholder="например: Магазин / Такси" />
+        </label>
+
+        <label class="field">
+          <span class="muted">Дата</span>
+          <input id="txDate" type="date" />
+        </label>
+
+        <button class="full" type="submit">Добавить транзакцию</button>
+      </form>
+
+      <div class="row">
+        <label class="field">
+          <span class="muted">Импорт CSV (date, type, amount, category, note)</span>
+          <div class="inline">
+            <input id="csvFile" type="file" accept=".csv" />
+            <button id="importBtn" type="button">Импортировать</button>
+          </div>
+        </label>
+      </div>
+
+      <div class="tableWrap">
+        <table class="table" id="txTable">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Тип</th>
+              <th>Категория</th>
+              <th>Сумма</th>
+              <th>Описание</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <button class="danger" id="resetBtn" type="button">Сбросить данные (опасно)</button>
+      </div>
+
+      <p class="muted small">
+        Примечание: “Синхронизация с банком” — сложная штука (API/доступы). Тут сделан импорт CSV как безопасная замена.
+      </p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
