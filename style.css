@@ -4,6 +4,7 @@
   --border:#e8e8e8;
   --text:#111;
   --muted:#6b6b6b;
+  --shadow: 0 6px 18px rgba(0,0,0,.06);
 }
 
 *{ box-sizing:border-box; }
@@ -19,14 +20,14 @@ body{
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  gap:16px;
-  padding:20px 24px;
+  gap:12px;
+  padding:16px;
   border-bottom:1px solid var(--border);
 }
 
-h1{ margin:0; font-size:22px; }
-h2{ margin:0 0 14px 0; font-size:18px; }
-h3{ margin:14px 0 10px 0; font-size:15px; }
+h1{ margin:0; font-size:20px; }
+h2{ margin:0 0 12px 0; font-size:17px; }
+h3{ margin:14px 0 8px 0; font-size:15px; }
 
 .muted{ color:var(--muted); margin:6px 0 0 0; }
 .small{ font-size:12px; }
@@ -41,15 +42,16 @@ h3{ margin:14px 0 10px 0; font-size:15px; }
 .grid{
   display:grid;
   grid-template-columns: 1fr 1fr;
-  gap:16px;
-  padding:16px 24px 28px 24px;
+  gap:12px;
+  padding:12px 16px 20px 16px;
 }
 
 .card{
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:16px;
   background:var(--card);
-  padding:16px;
+  padding:14px;
+  box-shadow: var(--shadow);
 }
 
 .row{
@@ -61,15 +63,15 @@ h3{ margin:14px 0 10px 0; font-size:15px; }
 
 .kpi{
   flex:1;
-  min-width: 220px;
+  min-width: 200px;
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:14px;
   padding:12px;
 }
 
 .big{
-  font-size:22px;
-  font-weight:700;
+  font-size:20px;
+  font-weight:800;
   margin-top:6px;
 }
 
@@ -84,30 +86,30 @@ h3{ margin:14px 0 10px 0; font-size:15px; }
 .inline{
   display:flex;
   gap:8px;
+  align-items:center;
 }
 
 input, select{
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px 10px;
-  font-size:14px;
+  border-radius:12px;
+  padding:12px 12px;
+  font-size:16px; /* важно для iOS: не будет авто-зума */
   width:100%;
 }
 
 button{
   border:1px solid var(--border);
-  border-radius:10px;
-  padding:10px 12px;
-  font-size:14px;
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:16px;
   cursor:pointer;
   background:#f6f6f6;
+  min-height:44px; /* touch target */
 }
 
 button:hover{ filter: brightness(0.98); }
 
-button.full{
-  flex-basis: 100%;
-}
+button.full{ flex-basis: 100%; }
 
 button.danger{
   background:#fff3f3;
@@ -123,13 +125,14 @@ hr{
 .tableWrap{
   overflow:auto;
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:14px;
 }
 
+/* ===== Таблица на десктопе ===== */
 .table{
   width:100%;
   border-collapse:collapse;
-  min-width: 640px;
+  min-width: 680px;
 }
 
 .table th, .table td{
@@ -141,16 +144,17 @@ hr{
 
 .table thead th{
   background:#fafafa;
-  font-weight:600;
+  font-weight:700;
 }
 
 .pill{
   display:inline-block;
-  padding:4px 8px;
+  padding:4px 10px;
   border-radius:999px;
   border:1px solid var(--border);
   font-size:12px;
   color:var(--muted);
+  white-space:nowrap;
 }
 
 .actions{
@@ -158,6 +162,48 @@ hr{
   gap:6px;
 }
 
+/* ===== Мобайл оптимизация ===== */
 @media (max-width: 1000px){
   .grid{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px){
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .monthbox{ min-width: 100%; }
+
+  .kpi{ min-width: 100%; }
+  .field{ min-width: 100%; }
+
+  .inline{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  /* Таблицы в карточки (чтобы не было горизонтального скролла) */
+  .tableWrap{ overflow: visible; border: none; }
+  .table{ min-width: 0; }
+  .table thead{ display:none; }
+  .table, .table tbody, .table tr, .table td{ display:block; width:100%; }
+  .table tr{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:10px;
+    margin-bottom:10px;
+    background:#fff;
+  }
+  .table td{
+    border: none;
+    padding:6px 0;
+    font-size:14px;
+  }
+  .table td::before{
+    content: attr(data-label);
+    display:block;
+    color: var(--muted);
+    font-size:12px;
+    margin-bottom:2px;
+  }
 }
